@@ -45,9 +45,10 @@ void transpose_sparse(sparse* s){
 void multiply(sparse* a,sparse* b,sparse* c){
 	//O(k^2)
 	transpose_sparse(b);
-	/*now we store the starting index
-	 *and ending index of every row (of the original matrix)
-	 *in the sparse matrix
+	/*
+	 * now we store the starting index
+	 * and ending index of every row (of the original matrix)
+	 * in the sparse matrix
 	 */
 	//row#, lower index, upper index
 	vector<pair<int,pair<int,int> > > la,lb;
@@ -71,8 +72,9 @@ void multiply(sparse* a,sparse* b,sparse* c){
 			lb.push_back(make_pair(b[i].row,make_pair(i,i)));
 	}
 	int k=1;
-	//now multiply every row
-	//of a with every row of b
+	/* now multiply every row
+	 * of a with every row of b
+	 */
 	for(auto i:la){
 		for(auto j:lb){
 			int cell=0;
@@ -95,10 +97,6 @@ void multiply(sparse* a,sparse* b,sparse* c){
 	c[0].val=k-1;
 }
 int main(){
-	// #ifndef ONLINE_JUDGE
-	// freopen("input.txt","r",stdin);
-	// freopen("output.txt","w",stdout);
-	// #endif
 	take_input_sparse(a);
 	take_input_sparse(b);
 	multiply(a,b,c);
