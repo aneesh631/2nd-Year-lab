@@ -19,6 +19,18 @@ void print_sparse(sparse *s){
 	cout<<endl;
 
 }
+void print_matrix(sparse *s){
+	int r=s[0].row,c=s[0].col,k=1;
+	for(int i=0;i<r;i++){
+		for(int j=0;j<c;j++){
+			if(s[k].row == i && s[k].col==j)
+				cout<<s[k++].val<<" ";
+			else
+				cout<<"0 ";
+		}
+		cout<<endl;
+	}
+}
 sparse a[20],b[20],c[20];
 void take_input_sparse(sparse* s){
 	int r,c,v;
@@ -100,6 +112,7 @@ int main(){
 	take_input_sparse(a);
 	take_input_sparse(b);
 	multiply(a,b,c);
-	print_sparse(c);
+	cout<<endl;
+	print_matrix(c);
 	return 0;
 }
