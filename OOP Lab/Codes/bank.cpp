@@ -22,9 +22,9 @@ class Bank{
 		return balance*pow(1+rate/100,t);
 	}
 public:
-	Bank(float b,float r){
-		balance=b;
-		rate=r;
+	Bank(){
+		cout<<"Enter balance and rate:";
+		cin>>balance>>rate;
 	}
 	~Bank(){
 		cout<<"I am destroyed."<<endl;
@@ -62,7 +62,7 @@ public:
 	}
 };
 int main(){
-	Bank aneesh(1000,10);
+	Bank aneesh;
 	while(aneesh.menu()!=5){}
 	return 0;
 }
