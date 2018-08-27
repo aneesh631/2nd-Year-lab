@@ -1,6 +1,5 @@
 #include <iostream>
 using namespace std;
-
 struct sparse{
 	int row,col,val;
 	sparse(){}
@@ -10,24 +9,12 @@ struct sparse{
 		val=v;
 	}
 };
-
 sparse a[20],b[20],ans[20];
-
-int m[3][3];
-int r=3,c=3;
-
-void create_sparse(sparse *s){
-	s[0]=sparse(r,c,0);
-	int k=1;
-	for(int i=0;i<r;i++){
-		for(int j=0;j<c;j++){
-			if(m[i][j])
-				s[k++]=sparse(i,j,m[i][j]);
-		}
-	}
-	s[0].val = k-1;
+void read_sparse(sparse *s){
+	cin>>s[0].row>>s[0].col>>s[0].val;
+	for(int i=1;i<=s[0].val;i++)
+		cin>>s[i].row>>s[i].col>>s[i].val;
 }
-
 void print_sparse(sparse *s){
 	cout<<endl;
 	int k=s[0].val;
@@ -36,7 +23,6 @@ void print_sparse(sparse *s){
 	cout<<endl;
 
 }
-
 void add_sparse(sparse *a,sparse* b,sparse *c){
 	int i=1,j=1,k=1;
 	int i_max=a[0].val,j_max=b[0].val;
@@ -62,27 +48,11 @@ void add_sparse(sparse *a,sparse* b,sparse *c){
 		c[k++]=b[j++];
 	c[0] = sparse(a[0].row,a[0].col,k-1);
 }
-
 int main(){
-
-	for(int i=0;i<r;i++){
-		for(int j=0;j<c;j++)
-			cin>>m[i][j];
-	}
-	create_sparse(a);
-	print_sparse(a);
-
-	for(int i=0;i<r;i++){
-		for(int j=0;j<c;j++)
-			cin>>m[i][j];
-	}
-	create_sparse(b);
-	print_sparse(b);
-
+	read_sparse(a);
+	read_sparse(b);
 	add_sparse(a,b,ans);
 	cout<<"ans:\n";
-	print_sparse(ans);
-
-	
+	print_sparse(ans);	
 	return 0;
 }
