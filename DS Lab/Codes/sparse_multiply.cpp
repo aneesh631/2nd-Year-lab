@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <list>
+
 using namespace std;
 struct sparse{
 	int row,col,val;
@@ -55,7 +55,7 @@ void transpose_sparse(sparse* s){
 }
 
 void multiply(sparse* a,sparse* b,sparse* c){
-	//O(k^2)
+	//O(k^3/2)
 	transpose_sparse(b);
 	/*
 	 * now we store the starting index
@@ -90,7 +90,7 @@ void multiply(sparse* a,sparse* b,sparse* c){
 	for(auto i:la){
 		for(auto j:lb){
 			int cell=0;
-			int ai=i.second.first,bj=j.second.second;
+			int ai=i.second.first,bj=j.second.first;
 			while(ai<=i.second.second && bj<=j.second.second){
 				if(a[ai].col == b[bj].col)
 					cell+=a[ai++].val*b[bj++].val;
@@ -113,6 +113,6 @@ int main(){
 	take_input_sparse(b);
 	multiply(a,b,c);
 	cout<<endl;
-	print_matrix(c);
+	print_sparse(c);
 	return 0;
 }
