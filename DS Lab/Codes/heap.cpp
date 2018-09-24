@@ -11,7 +11,7 @@ struct Min_Heap{
 		a[++n] = v;
 		int cur = n;
 		while(cur!=0){
-			int parent = cur>>1;
+			int parent = (cur-1)>>1;
 			if(a[parent] < a[cur])
 				break;
 			swap(a[parent],a[cur]);
@@ -19,19 +19,15 @@ struct Min_Heap{
 		}
 	}
 	void heapify(int i){
-		int left = 2*i + 1, right = 2*i + 2;
-        if(left > n)
-            return;
-		if(a[i] >= a[left]){
-			swap(a[i],a[left]);
-			heapify(left);
-		}
-        if(right > n)
-            return;
-		if(a[i] >= a[right]){
-			swap(a[i],a[right]);
-			heapify(right);
-		}
+		int left = 2*i + 1, right = 2*i + 2, smallest = i;
+        if(left<=n && a[left] < a[smallest])
+        	smallest = left;
+        if(right <=n && a[right] < a[smallest])
+        	smallest = right;
+        if(i != smallest){
+	        swap(a[i],a[smallest]);
+	        heapify(smallest);
+	    }
 	}
 	int pop(){
 		if(n == -1)
