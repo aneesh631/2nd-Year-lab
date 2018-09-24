@@ -10,7 +10,7 @@ public:
 	friendfunc1(){
 		cin>>a>>b;
 	}
-	friend float avg(friendfunc1,friendfunc2);
+
 };
 class friendfunc2 {
 	int a,b,c;
