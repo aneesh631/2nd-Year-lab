@@ -15,22 +15,33 @@ public:
 	}
 	friend class BST;
 };
+class Pair{
+	bool first;
+	Node* second;
+	friend class BST;
+public:
+	Pair(){}
+	Pair(bool r,Node* p){
+		first = r;
+		second = p;
+	}
+};
 class BST{
 	Node* root;
-	pair<bool,Node*> find_parent(int v){
-		if(root == NULL)
-			return NULL;
-		Node *prev = NULL, *cur = root;
+	Pair find_parent(int v,Node *s){
+		if(s == NULL)
+			return Pair(false,NULL);
+		Node *prev = NULL, *cur = s;
 		while(cur != NULL){
 			if(cur->data == v)
-				return make_pair(true,prev);
+				return Pair(true,prev);
 			else if(cur->data < v)
 				cur = cur->right;
 			else
 				cur = cur->left;
 			prev = cur;
 		}
-		return make_pair(false,prev);
+		return Pair(false,prev);
 	}
 public:
 	BST(){
@@ -55,18 +66,20 @@ public:
 			prev->left = new Node(v);
 	}
 	Node* find(int v){
-		pair<bool,Node*> p = find_parent(v);
-		if(!p.first) return NULL:
+		Pair p = find_parent(v,root);
+		if(!p.first) return NULL;
 		if(p.second->data <= v)
 			return p.second->right;
 		else
 			return p.second->left;
 	}
-	void remove(int v,Node* s = root){
-		pair<bool,Node*> p = find_parent(v);
+	void remove(int v,Node* s){
+		if(s == NULL) s = root;
+		Pair p = find_parent(v,s);
 		if(!p.first) return;
 		Node* c;
 		int side;
+
 		if(p.second->data <= v){
 			side = 1;
 			c = p.second->right;
@@ -75,6 +88,7 @@ public:
 			side = 0;
 			c = p.second->left;
 		}
+		//only 1 child
 		if(c->left == NULL){
 			if(side)
 				p.second->right = c->right;
@@ -91,7 +105,15 @@ public:
 			delete c;
 			return;
 		}
-
+		//2 childeren
+		// pick the largest from the left subtree
+		Node *pl = NULL, *l = c;
+		while(l->right != NULL){
+			pl = l;
+			l = l->right;
+		}
+		c->data = l->data;
+		remove(l->data,pl);
 	}
 };
 int main(){
@@ -100,8 +122,14 @@ int main(){
 	b.insert(3);
 	b.insert(5);
 	b.insert(2);
-	Node* f = b.find(6);
-	if(f == NULL)
-		cout<<"Not found!";
+
+	Node* f = b.find(4);
+	if(f == NULL) cout<<"Not found!\n";
+	else cout<<"Found!\n";
+
+	f = b.find(5);
+	if(f == NULL) cout<<"Not found!\n";
+	else cout<<"Found!\n";
+
 	return 0;
 }
