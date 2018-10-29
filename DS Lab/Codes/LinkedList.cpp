@@ -1,5 +1,4 @@
 #include <iostream>
-#define MAX 10000
 using namespace std;
 struct Node{
 	int data;
