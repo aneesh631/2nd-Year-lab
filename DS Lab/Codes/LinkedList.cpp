@@ -29,23 +29,29 @@ struct LinkedList{
 		tail = tail->next;
 	}
 	void insert_at_head(int v){
+		if(head == NULL){
+			head = tail = new Node(v);
+			return;
+		}
 		Node* new_head = new Node(v);
 		new_head->next = head;
 		head = new_head;
 	}
-	void insert_after(int a,int v){
-		//inserts after node with data = a (if present)
-		if(head == NULL)
-			return ;
-		Node* p = head;
-		while(p != NULL && p->data != a){
-			p = p->next;
-		}
-		if(p->data != a) 
+	void insert_at(int i,int v){
+		//insert at index i, or at the end if greater than length
+		if(i == 0){
+			insert_at_head(v);
 			return;
-		Node* new_node = new Node(v);
-		new_node->next = p->next;
-		p->next = new_node;
+		}
+		Node* p = head;
+		while(p != NULL && --i)
+			p = p->next;
+		if(i) insert_at_tail(v);
+		else{
+			Node* new_node = new Node(v);
+			new_node->next = p->next;
+			p->next = new_node;
+		}
 	}
 	void print(){
 		Node* p = head;
@@ -61,7 +67,7 @@ struct LinkedList{
 		cout<<"---------------------\n";
 		cout<<"1 - Insert at head\n";
 		cout<<"2 - Insert at tail\n";
-		cout<<"3 - Insert after\n";
+		cout<<"3 - Insert at\n";
 		cout<<"4 - Print\n";
 		cout<<"5 - Exit\n";
 		cout<<"---------------------\n";
@@ -80,7 +86,7 @@ struct LinkedList{
 				break;
 			case 3:
 				cin>>a>>v;
-				insert_after(a,v);
+				insert_at(a,v);
 				menu();
 				break;
 			case 4:
