@@ -62,43 +62,17 @@ struct LinkedList{
 		}
 		cout<<endl;
 	}
-	void menu(){
-		cout<<"---------------------\n";
-		cout<<"1 - Insert at head\n";
-		cout<<"2 - Insert at tail\n";
-		cout<<"3 - Insert at\n";
-		cout<<"4 - Print\n";
-		cout<<"5 - Exit\n";
-		cout<<"---------------------\n";
-		int choice, v, a;
-		cin>>choice;
-		switch(choice){
-			case 1:
-				cin>>v;
-				insert_at_head(v);
-				menu();
-				break;
-			case 2:
-				cin>>v;
-				insert_at_tail(v);
-				menu();
-				break;
-			case 3:
-				cin>>a>>v;
-				insert_at(a,v);
-				menu();
-				break;
-			case 4:
-				print();
-				menu();
-				break;
-			case 5:
-				return;
-		}
-	}
 };
 int main(){
 	LinkedList l;
-	l.menu();
+	l.insert_at_head(1);
+	l.print();
+	l.insert_at_head(2);
+	l.print();
+	l.insert_at_tail(3);
+	l.insert_at_tail(4);
+	l.print();
+	l.insert_at(2,5);
+	l.print();
 	return 0;
 }

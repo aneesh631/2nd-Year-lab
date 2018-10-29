@@ -35,7 +35,8 @@ int main(){
 		int top=q.remove();
 		if(top==-1)
 			break;
-		cout<<top<<endl;
+		cout<<top<<" ";
 	}
+	cout<<endl;
 	return 0;
 }
