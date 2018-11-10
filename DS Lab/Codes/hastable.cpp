@@ -1,5 +1,11 @@
 #include <iostream>
 using namespace std;
+template<class T>
+class Node;
+template<class T>
+class LinkedList;
+template<class T,class U>
+class Hashtable;
 template<class T,class U>
 class Pair{
 	T key;
@@ -10,9 +16,9 @@ public:
 		key = k;
 		value = v;
 	}
-	friend class Node;
+	friend class Hashtable<T,U>;
+	template<class V>
 	friend class LinkedList;
-	friend class Hashtable;
 };
 template<class T>
 class Node{
@@ -27,7 +33,8 @@ public:
 		data = d;
 		next = NULL;
 	}
-	friend class LinkedList;
+	friend class LinkedList<T>;
+	template<class U, class V>
 	friend class Hashtable;
 };
 template<class T>
@@ -64,18 +71,20 @@ public:
 		}
         return ans;
 	}
-	T get_node(T v){
+	template<class U>
+	T get_node(U v){
 		if(head == NULL)
 			throw "Not found!";
 		Node<T>* c = head;
 		while(c != NULL){
 			if(c->data.key == v)
-				return *c;
+				return c->data;
 		}
 	}
 	bool empty(){
 		return head == NULL;
 	}
+	template<class U, class V>
 	friend class Hashtable;
 };
 template<class T,class U>
@@ -90,7 +99,7 @@ class Hashtable{
 			LinkedList<Pair<T,U> > ll = Table[i];
 			Node<Pair<T,U> >* c = ll.head;
 			while(c != NULL){
-				new_table->insert(c->data);
+				new_table->insert(c->data.key,c->data.value);
 				c = c->next;
 			}
 		}
@@ -104,21 +113,23 @@ public:
 		entries = 0;
 		critical_load_factor = 0.7;
 		hash = h;
-		Table = new LinkedList<Pair<T,U> >[size];
+		Table = new LinkedList<Pair<T,U> > [size];
 	}
 	float load_factor(){
 		return float(entries)/float(size);
 	}
-	void insert(Pair<T,U> p){
+	void insert(T k,U v){
+		Pair<T,U> p = Pair<T,U>(k,v);
 		if(load_factor() >= critical_load_factor)
-			rehash;
+			rehash();
 		int id = hash(p.key,size);
 		Table[id].insert(p);
 		entries++;
 	}
-	void get_value(T k){
+	U get_value(T k){
 		int id = hash(k,size);
-		return Table[id].get_node(k);
+		Pair<T,U> p = Table[id].get_node(k);
+		return p.value;
 	}
 };
 int hash_int(int k,int size){
@@ -135,10 +146,13 @@ int hash_int(int k,int size){
 }
 int main(){
 	Hashtable<int,int> h(hash_int); 
-	// h.insert(Pair<int,int>(1,100));
-	// h.insert(Pair<int,int>(2,200));
-	// h.insert(Pair<int,int>(3,300));
-	// h.insert(Pair<int,int>(4,400));
-	// cout<<h.get_value(3)<<endl;
+	h.insert(1,100);
+	h.insert(2,200);
+	h.insert(3,300);
+	h.insert(4,400);
+	cout<<h.get_value(1)<<endl;
+    cout<<h.get_value(2)<<endl;         
+    cout<<h.get_value(3)<<endl;
+    cout<<h.get_value(4)<<endl;
 	return 0;
 }
