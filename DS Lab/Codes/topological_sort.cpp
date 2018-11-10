@@ -23,17 +23,12 @@ public:
 	void add_node(T u){
 		adj_list[u];
 	}
-	list<T> topo_dfs(){
+	stack<T> topo_dfs(){
 		unordered_map<T,bool> visited;
-		stack<T> s;
+		stack<T> ts;
 		for(auto p:adj_list){
 			if(!visited[p.first])
-				topo_dfs_helper(p.first,visited,s);
-		}
-		list<T> ts;
-		while(!s.empty()){
-			ts.push_back(s.top());
-			s.pop();
+				topo_dfs_helper(p.first,visited,ts);
 		}
 		return ts;
 	}
@@ -73,13 +68,15 @@ int main(){
 	g.add_edge(6,7);
 	g.add_edge(2,4);
 
-	list<int> ts = g.topo_dfs();
-	for(int e:ts)
-		cout<<e<<" ";
+	stack<int> ts_dfs = g.topo_dfs();
+	while(!ts_dfs.empty()){
+		cout<<ts_dfs.top()<<" ";
+		ts_dfs.pop();
+	}
 	cout<<endl;
 
-	ts = g.topo_bfs();
-	for(int e:ts)
+	list<int> ts_bfs = g.topo_bfs();
+	for(int e:ts_bfs)
 		cout<<e<<" ";
 	cout<<endl;
 }
