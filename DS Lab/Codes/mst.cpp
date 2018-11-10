@@ -61,11 +61,15 @@ public:
 	bool operator () (Edge<T> a,Edge<T> b){
 	    return a.d > b.d;
 	}
+	bool operator () (pair<T,int> a,pair<T,int> b){
+	    return a.second > b.second;
+	}
 };
 template<class T>
 class Graph{
 	//undirected weighted graph
 	unordered_map<T,list<pair<T,int> > > adj_list;
+	const int INF = 1000000009;
 public:
 	void add_edge(T u,T v,int d){
 		adj_list[u].push_back({v,d});
@@ -97,6 +101,37 @@ public:
 		}
 		return cost;
 	}
+	int prim(){
+		unordered_map<T,bool> included;
+		unordered_map<T,int> weight;
+		unordered_map<T,T> parent;
+		for(auto p:adj_list)
+			weight[p.first] = INF;
+		T src = adj_list.begin()->first;
+		weight[src] = 0;
+		priority_queue<T,vector<pair<T,int> >,cmp<T> > pq;
+		pq.push({src,0});
+		int cost = 0;
+		while(!pq.empty()){
+			auto t = pq.top();
+			T u = t.first;
+			pq.pop();
+			if(!included[u]){
+				included[u] = true;
+				cost += t.second;
+				for(auto n:adj_list[u]){
+					T v = n.first;
+					int d = n.second;
+					if(v != parent[u] && !included[v] && d < weight[v]){
+						weight[v] = d;
+						parent[v] = u;
+						pq.push({v,weight[v]});
+					}
+				}
+			}
+		}
+		return cost;
+	}
 };
 int main(){
 	Graph<int> g;
@@ -110,4 +145,5 @@ int main(){
 	g.add_edge(4,6,5);
 	g.add_edge(5,6,6);
     cout<<g.kruskal()<<endl;
+    cout<<g.prim()<<endl;
 }
